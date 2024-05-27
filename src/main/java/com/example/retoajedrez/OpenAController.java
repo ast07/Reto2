@@ -96,7 +96,7 @@ public class OpenAController implements Initializable {
         Functions f = new Functions();
         jugadoresA = FXCollections.observableArrayList();
 
-        f.insertarA("C:/Users/Juan Karl/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv");
+        f.insertarA("C:/Users/adri1/IdeaProjects/Reto2.2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv");
         //f.insertarA("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv");
         jugadoresA.addAll(f.tableA());
 
@@ -113,7 +113,6 @@ public class OpenAController implements Initializable {
         this.colRanking.setCellValueFactory(new PropertyValueFactory<>("ranking"));
         this.colPais.setCellValueFactory(new PropertyValueFactory<>("pais"));
         this.colInfo.setCellValueFactory(new PropertyValueFactory<>("info"));
-
         this.tblJugadoresA.setItems(jugadoresA);
         
     }

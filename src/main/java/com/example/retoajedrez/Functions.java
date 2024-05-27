@@ -34,14 +34,14 @@ public class Functions {
     private static Connection getConnexion() throws SQLException {
         String url = "jdbc:mariadb://localhost:3306/grupoa";
         String user = "root";
-        String password = "Debian";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 
     private static Connection getConnexion2() throws SQLException {
         String url = "jdbc:mariadb://localhost:3306/grupob";
         String user = "root";
-        String password = "Debian";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 
