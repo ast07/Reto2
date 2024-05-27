@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="1218.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.retoajedrez.OpenBController">
+    <children>
+        <Button fx:id="iraposiblespremiosb" layoutX="61.0" layoutY="408.0" mnemonicParsing="false" onAction="#irAPosiblesPremiosB" prefHeight="50.0" prefWidth="186.0" text="Posibles premios" />
+        <Button fx:id="importarb" layoutX="56.0" layoutY="204.0" mnemonicParsing="false" onAction="#importarB" prefHeight="50.0" prefWidth="186.0" text="Importar" />
+        <TableView fx:id="tblJugadoresB" layoutX="270.0" layoutY="14.0" prefHeight="663.0" prefWidth="933.0">
+            <columns>
+                <TableColumn fx:id="colRanking" editable="false" sortType="DESCENDING" style="-fx-alignment: CENTER;" text="Ranking" />
+                <TableColumn fx:id="colNombre" minWidth="0.0" prefWidth="449.0" style="-fx-alignment: CENTER;" text="Nombre" />
+                <TableColumn fx:id="colPais" minWidth="0.0" prefWidth="74.0" style="-fx-alignment: CENTER;" text="País" />
+                <TableColumn fx:id="colFide" minWidth="1.0" prefWidth="114.0" style="-fx-alignment: CENTER;" text="FIDE" />
+                <TableColumn fx:id="colFideID" minWidth="0.0" prefWidth="146.0" style="-fx-alignment: CENTER;" text="FIDE ID" />
+                <TableColumn fx:id="colInfo" minWidth="0.0" prefWidth="52.0" style="-fx-alignment: CENTER;" text="Info" />
+            </columns>
+        </TableView>
+        <ImageView fitHeight="162.0" fitWidth="162.0" layoutX="80.0" layoutY="16.0">
+            <image>
+                <Image url="@Imagenes/LOGO.png" />
+            </image>
+        </ImageView>
+        <Button layoutX="56.0" layoutY="306.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="186.0" text="Modificar" />
+        <Button layoutX="15.0" layoutY="16.0" mnemonicParsing="false" onAction="#irAlMenu" prefHeight="40.0" prefWidth="40.0">
+            <graphic>
+                <ImageView fx:id="iramenu" fitHeight="36.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@Imagenes/flecha.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+    </children>
+</AnchorPane>
