@@ -1,13 +1,13 @@
 target/
-!../Reto2/.mvn/wrapper/maven-wrapper.jar
+!../../IdeaProjects/Reto2.2/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-../Reto2/.idea/modules.xml
-../Reto2/.idea/jarRepositories.xml
-../Reto2/.idea/compiler.xml
-../Reto2/.idea/libraries/
+../../IdeaProjects/Reto2.2/.idea/modules.xml
+../../IdeaProjects/Reto2.2/.idea/jarRepositories.xml
+../../IdeaProjects/Reto2.2/.idea/compiler.xml
+../../IdeaProjects/Reto2.2/.idea/libraries/
 *.iws
 *.iml
 *.ipr
