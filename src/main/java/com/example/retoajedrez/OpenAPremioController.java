@@ -12,9 +12,28 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class OpenAPremioController extends Application {
+
+    static Connection cnx; static Connection cnx2;
+
+    static {
+        try {
+            cnx = getConnexion();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Connection getConnexion() throws SQLException {
+        String url = "jdbc:mariadb://localhost:3306/grupoa";
+        String user = "root";
+        String password = "root";
+        return DriverManager.getConnection(url, user, password);
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -48,9 +67,7 @@ public class OpenAPremioController extends Application {
 
     @FXML
     private void optarA(ActionEvent event) throws SQLException {
-        Functions f = new Functions();
         ObservableList<Jugador> jugadores = null;
-
-        f.optarA();
+        Functions.optarA(cnx);
     }
 }

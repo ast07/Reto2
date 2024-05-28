@@ -37,11 +37,10 @@ public class OpenBPremioController implements Initializable {
         }
     }
 
-
     private static Connection getConnexion() throws SQLException {
-        String url = "jdbc:mariadb://localhost:3306/grupob";
+        String url = "jdbc:mariadb://localhost:3306/GrupoB";
         String user = "root";
-        String password = "Debian";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 

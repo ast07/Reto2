@@ -19,10 +19,29 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class OpenAController implements Initializable {
+
+    static Connection cnx;
+
+    static {
+        try {
+            cnx = getConnexion();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Connection getConnexion() throws SQLException {
+        String url = "jdbc:mariadb://localhost:3306/grupoa";
+        String user = "root";
+        String password = "root";
+        return DriverManager.getConnection(url, user, password);
+    }
 
     private ObservableList<com.example.retoajedrez.Jugador> jugadoresA;
 
@@ -93,13 +112,10 @@ public class OpenAController implements Initializable {
 
     @FXML
     private void importarA(ActionEvent event) throws SQLException {
-        Functions f = new Functions();
         jugadoresA = FXCollections.observableArrayList();
+        Functions.insertar("C:/Users/adri1/IdeaProjects/Reto2.2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv",cnx);
 
-        f.insertarA("C:/Users/adri1/IdeaProjects/Reto2.2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv");
-        //f.insertarA("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv");
-        jugadoresA.addAll(f.tableA());
-
+        jugadoresA.addAll(Functions.table(cnx));
         this.tblJugadoresA.setItems(jugadoresA);
     }
 
