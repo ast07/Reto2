@@ -32,16 +32,16 @@ public class Functions {
     }
 
     private static Connection getConnexion() throws SQLException {
-        String url = "jdbc:mariadb://localhost:3306/GrupoA";
+        String url = "jdbc:mariadb://localhost:3306/grupoa";
         String user = "root";
-        String password = "";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 
     private static Connection getConnexion2() throws SQLException {
-        String url = "jdbc:mariadb://localhost:3306/GrupoB";
+        String url = "jdbc:mariadb://localhost:3306/grupob";
         String user = "root";
-        String password = "";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -85,7 +85,6 @@ public class Functions {
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public static void insertarB(String nombre){
@@ -274,7 +273,7 @@ public class Functions {
         }
     }
 
-    public static void actualizarA(){
+    public static void ganadoresA() throws SQLException {
         FileReader fr;
         Scanner sc = null;
         String palabra="";
@@ -299,74 +298,10 @@ public class Functions {
             }
             ps.close();
             fr.close();
-        } catch (IOException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void actualizarRankingFinal() throws SQLException {
-        FileReader fr;
-        Scanner sc = null;
-        String palabra = "";
-        String field;
-
-        try {
-            fr = new FileReader("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/RankingFinalA.csv");
-            BufferedReader bf = new BufferedReader(fr);
-            PreparedStatement ps = cnx.prepareStatement("UPDATE JugadorOptaPremio SET RankingFinal = ? WHERE Ranking = ?");
-            while ((palabra = bf.readLine()) != null) {
-                sc = new Scanner(palabra);
-                sc.useDelimiter(";");
-                while (sc.hasNext()) {
-                    field = sc.next();
-                    ps.setInt(1, Integer.parseInt(field));
-                    field = sc.next();
-                    ps.setInt(2, Integer.parseInt(field));
-                    break;
-                }
-                System.out.println(ps);
-                ps.executeUpdate();
-            }
-            ps.close();
-            fr.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
 
-
-
-    public static void actualizarB(){
-        FileReader fr;
-        Scanner sc = null;
-        String palabra="";
-        String field;
-
-        try{
-            fr = new FileReader("/home/ALU1J/Descargas/GrupoB/RankingFinalB.csv");
-            BufferedReader bf = new BufferedReader(fr);
-            PreparedStatement ps = cnx2.prepareStatement("UPDATE JugadorOptaPremio SET RankingFinal = ? WHERE Ranking = ?");
-            while((palabra=bf.readLine())!=null){
-                sc = new Scanner(palabra);
-                sc.useDelimiter(";");
-                while(sc.hasNext()){
-                    field = sc.next();
-                    ps.setInt(1,Integer.parseInt(field));
-                    field = sc.next();
-                    ps.setInt(2,Integer.parseInt(field));
-                    break;
-                }
-                System.out.println(ps);
-                ps.executeUpdate();
-            }
-            ps.close();
-            fr.close();
-        } catch (IOException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void ganadoresA() throws SQLException {
         int contadorGeneral=0; //Max:12
         int contadorCV=0; //Max:5
         int contadorHotel=0; //Max:20
@@ -376,88 +311,11 @@ public class Functions {
         Statement st = cnx.createStatement();
         boolean flag= st.execute("SELECT * FROM JugadorOptaPremio ORDER BY RankingFinal asc");
 
-        if(flag){
-            ResultSet rs = st.getResultSet();
-            while(rs.next()){
-                String[] premios = rs.getString("Tipo").split(",");
-                ArrayList<Integer> contadores = new ArrayList<>();
-                for(int i=0;i<premios.length;i++){
-                    if(premios[i].equals("General") && contadorGeneral <= 12){
-                        contadorGeneral++;
-                        contadores.add(contadorGeneral);
-                    }else if(premios[i].equals("CV") && contadorCV <= 5 ){
-                        contadorCV++;
-                        contadores.add(contadorCV);
-                    } else if (premios[i].equals("CVH")) {
-                        contadorCV++;
-                        contadorHotel++;
-                        contadores.add(contadorCV);
-                        contadores.add(contadorHotel);
-                    } else if(premios[i].equals("H") && contadorHotel <= 20){
-                        contadorHotel++;
-                        contadores.add(contadorHotel);
-                    }else if(premios[i].equals("2400") && contador2400 <= 4){
-                        contador2400++;
-                        contadores.add(contador2400);
-                    }else if(premios[i].equals("2200") && contador2200 <= 2){
-                        contador2200++;
-                        contadores.add(contador2200);
-                    }
-                }
-                PreparedStatement ps = cnx.prepareStatement("SELECT Importe FROM Premio WHERE Tipo LIKE ? AND Puesto = ?");
-                int[] importes = new int[premios.length];
-                for(int i=0;i<premios.length;i++){
-                    ps.setString(1,premios[i]);
-                    ps.setInt(2,contadores.get(i));
-                    ResultSet r = ps.executeQuery();
-                    importes[i] = r.getInt("Importe");
-                }
-
-                int aux = importes[0], cont=0, posicion=importes[0];
-
-                for(int i=0;i<premios.length;i++){
-                    if(aux < importes[i]){
-                        aux = importes[i];
-                        posicion = i;
-                    }
-                }
-
-                for(int i=0;i<premios.length;i++){
-                    if(aux==importes[i]){
-                        cont++;
-                    }
-                }
-
-                PreparedStatement preparedStatement = cnx.prepareStatement("INSERT INTO Ganadores VALUES (?,?,?,?,?)");
-                if(cont==1){
-                    preparedStatement.setInt(1,rs.getInt("Ranking"));
-                    preparedStatement.setInt(2,rs.getInt("RankingFinal"));
-                    preparedStatement.setString(3,rs.getString("Nombre"));
-                    preparedStatement.setString(4,premios[posicion] + " -> " + importes[posicion]);
-                    preparedStatement.executeUpdate();
-                    System.out.println(preparedStatement);
-                } else if (cont>1) {
-                    for(int i=0;i<premios.length;i++){
-                        if(premios[i].equalsIgnoreCase("General") && importes[i] == aux){
-
-                        }else if(premios[i].equalsIgnoreCase("2400") && importes[i] == aux){
-
-                        }else if (premios[i].equalsIgnoreCase("2200") && importes[i] == aux) {
-
-                        }else if (premios[i].equalsIgnoreCase("CV") && importes[i] == aux) {
-
-                        }
-                    }
-                }
-            }
-        }
-
 
 
     }
 
     public ObservableList<Jugador> tableA() throws SQLException {
-
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM Jugador ORDER BY Ranking ASC");
         ObservableList<Jugador> jugadoresA = FXCollections.observableArrayList();
@@ -479,35 +337,6 @@ public class Functions {
                 info = rs.getString("Info");
 
                 Jugador j = new Jugador(ranking,nombre,pais,fide,fideId,info);
-                jugadoresA.add(j);
-            }
-        }
-        return jugadoresA;
-    }
-
-    public ObservableList<Jugador> tbloptapremiosA() throws SQLException {
-        Statement st = cnx.createStatement();
-        boolean flag = st.execute("SELECT * FROM GrupoA.JugadorOptaPremio ORDER BY Ranking ASC");
-        ObservableList<Jugador> jugadoresA = FXCollections.observableArrayList();
-
-        if(flag){
-            ResultSet rs = st.getResultSet();
-            int ranking;
-            int rankingFinal;
-            String tipo;
-            String nombre;
-            String fideId;
-            String desc;
-
-            while(rs.next()){
-                ranking = rs.getInt("Ranking");
-                rankingFinal = rs.getInt("RankingFinal");
-                tipo = rs.getString("tipo");
-                nombre = rs.getString("Nombre");
-                fideId = rs.getString("FIDEID");
-                desc = rs.getString("desc");
-
-                Jugador j = new Jugador(nombre, ranking, rankingFinal, tipo, fideId, desc);
                 jugadoresA.add(j);
             }
         }
@@ -583,6 +412,12 @@ public class Functions {
     }
 
 
+    public static void main(String[] args) throws SQLException, FileNotFoundException {
+       //Functions.imprimir();
+
+         Functions.ganadoresA();
+         Functions.ganadoresB();
+    }
 
     public static void imprimir() throws SQLException, FileNotFoundException {
         Statement st = cnx.createStatement();
@@ -620,18 +455,6 @@ public class Functions {
         }
     }
 
-    public static void main(String[] args) throws SQLException, FileNotFoundException {
-        System.out.println("caca");
-        Functions.insertarA("/home/ALU1J/Descargas/GrupoA/Libro.csv");
-        System.out.println("----------------------------------------------------");
-        Functions.insertarB("/home/ALU1J/Descargas/GrupoB/LibroB.csv");
-        System.out.println("----------------------------------------------------");
-        Functions.optarA();
-        System.out.println("----------------------------------------------------");
-        Functions.optarB();
-        System.out.println("----------------------------------------------------");
-        Functions.actualizarA();
-        System.out.println("----------------------------------------------------");
-        Functions.actualizarB();
-    }
+
+
 }
