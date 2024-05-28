@@ -45,9 +45,11 @@ public class MenuController extends Application {
             Stage currentStage = (Stage) ((Window) ((javafx.scene.Node) event.getSource()).getScene().getWindow());
             currentStage.close();
 
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @FXML
@@ -149,6 +151,8 @@ public class MenuController extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
 }

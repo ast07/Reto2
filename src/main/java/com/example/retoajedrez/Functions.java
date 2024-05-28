@@ -32,16 +32,16 @@ public class Functions {
     }
 
     private static Connection getConnexion() throws SQLException {
-        String url = "jdbc:mariadb://localhost:3306/grupoa";
+        String url = "jdbc:mariadb://localhost:3306/GrupoA";
         String user = "root";
-        String password = "root";
+        String password = "";
         return DriverManager.getConnection(url, user, password);
     }
 
     private static Connection getConnexion2() throws SQLException {
-        String url = "jdbc:mariadb://localhost:3306/grupob";
+        String url = "jdbc:mariadb://localhost:3306/GrupoB";
         String user = "root";
-        String password = "root";
+        String password = "";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -85,6 +85,7 @@ public class Functions {
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public static void insertarB(String nombre){
@@ -303,6 +304,38 @@ public class Functions {
         }
     }
 
+    public static void actualizarRankingFinal() throws SQLException {
+        FileReader fr;
+        Scanner sc = null;
+        String palabra = "";
+        String field;
+
+        try {
+            fr = new FileReader("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/RankingFinalA.csv");
+            BufferedReader bf = new BufferedReader(fr);
+            PreparedStatement ps = cnx.prepareStatement("UPDATE JugadorOptaPremio SET RankingFinal = ? WHERE Ranking = ?");
+            while ((palabra = bf.readLine()) != null) {
+                sc = new Scanner(palabra);
+                sc.useDelimiter(";");
+                while (sc.hasNext()) {
+                    field = sc.next();
+                    ps.setInt(1, Integer.parseInt(field));
+                    field = sc.next();
+                    ps.setInt(2, Integer.parseInt(field));
+                    break;
+                }
+                System.out.println(ps);
+                ps.executeUpdate();
+            }
+            ps.close();
+            fr.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
     public static void actualizarB(){
         FileReader fr;
         Scanner sc = null;
@@ -424,6 +457,7 @@ public class Functions {
     }
 
     public ObservableList<Jugador> tableA() throws SQLException {
+
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM Jugador ORDER BY Ranking ASC");
         ObservableList<Jugador> jugadoresA = FXCollections.observableArrayList();
@@ -445,6 +479,35 @@ public class Functions {
                 info = rs.getString("Info");
 
                 Jugador j = new Jugador(ranking,nombre,pais,fide,fideId,info);
+                jugadoresA.add(j);
+            }
+        }
+        return jugadoresA;
+    }
+
+    public ObservableList<Jugador> tbloptapremiosA() throws SQLException {
+        Statement st = cnx.createStatement();
+        boolean flag = st.execute("SELECT * FROM GrupoA.JugadorOptaPremio ORDER BY Ranking ASC");
+        ObservableList<Jugador> jugadoresA = FXCollections.observableArrayList();
+
+        if(flag){
+            ResultSet rs = st.getResultSet();
+            int ranking;
+            int rankingFinal;
+            String tipo;
+            String nombre;
+            String fideId;
+            String desc;
+
+            while(rs.next()){
+                ranking = rs.getInt("Ranking");
+                rankingFinal = rs.getInt("RankingFinal");
+                tipo = rs.getString("tipo");
+                nombre = rs.getString("Nombre");
+                fideId = rs.getString("FIDEID");
+                desc = rs.getString("desc");
+
+                Jugador j = new Jugador(nombre, ranking, rankingFinal, tipo, fideId, desc);
                 jugadoresA.add(j);
             }
         }

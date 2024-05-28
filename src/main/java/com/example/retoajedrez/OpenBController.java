@@ -95,8 +95,8 @@ public class OpenBController implements Initializable {
         Functions f = new Functions();
         jugadoresB = FXCollections.observableArrayList();
 
-        f.insertarB("C:/Users/adri1/IdeaProjects/Reto2.2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv");
-        //f.insertarB("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/LibroB.csv");
+        //f.insertarB("C:/Users/Juan Karl/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/LibroB.csv");
+        f.insertarB("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/LibroB.csv");
         jugadoresB.addAll(f.tableB());
 
         this.tblJugadoresB.setItems(jugadoresB);

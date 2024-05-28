@@ -11,14 +11,15 @@ public class Jugador {
     private String info;
     private String pais;
     private String fide;
+    private String desc;
 
-    public Jugador(String nombre, int ranking, int rankingFinal, String tipo, String fideId, String info) {
+    public Jugador(String nombre, int ranking, int rankingFinal, String tipo, String fideId, String desc) {
         this.nombre = nombre;
         this.ranking = ranking;
         this.rankingFinal = rankingFinal;
         this.tipo = tipo;
         this.fideId = fideId;
-        this.info = info;
+        this.desc = desc;
     }
 
     public Jugador(int ranking, String nombre, String pais, String fide, String fideId, String info) {

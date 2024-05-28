@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+
 public class MainApp extends Application {
 
     public static void main(String[] args) {
@@ -24,9 +26,11 @@ public class MainApp extends Application {
             primaryStage.setResizable(false);
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 }

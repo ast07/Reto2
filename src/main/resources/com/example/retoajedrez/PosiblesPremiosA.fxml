@@ -10,7 +10,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1504.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.retoajedrez.OpenAPremioController">
     <children>
         <Button fx:id="optara" layoutX="61.0" layoutY="221.0" mnemonicParsing="false" onAction="#optarA" prefHeight="50.0" prefWidth="186.0" text="Buscar Premios" />
-        <TableView fx:id="tblposiblespremiosa" layoutX="270.0" layoutY="14.0" prefHeight="705.0" prefWidth="1226.0">
+        <TableView fx:id="tblposiblespremiosA" layoutX="270.0" layoutY="14.0" prefHeight="705.0" prefWidth="1226.0">
             <columns>
                 <TableColumn fx:id="colRanking" text="Ranking" />
             <TableColumn fx:id="colRankingFinal" prefWidth="123.0" text="RankingFinal" />
