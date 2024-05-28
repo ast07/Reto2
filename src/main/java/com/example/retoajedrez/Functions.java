@@ -1,7 +1,6 @@
 package com.example.retoajedrez;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.FXCollections; import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.sql.*;
@@ -45,15 +44,10 @@ public class Functions {
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 
     public static void optarA(Connection cnx) throws SQLException {
-        Statement stmt = cnx.createStatement();
-        stmt.executeUpdate("DELETE FROM jugadoroptapremio;");
-        stmt.close();
-
         PreparedStatement ps = cnx.prepareStatement("INSERT INTO JugadorOptaPremio(Tipo,Ranking,Nombre,FIDEID,Descalificado) VALUES (?,?,?,?,?)");
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM Jugador");
@@ -118,10 +112,6 @@ public class Functions {
     }
 
     public static void optarB(Connection cnx) throws SQLException {
-        Statement stmt = cnx.createStatement();
-        stmt.executeUpdate("DELETE FROM jugadoroptapremio;");
-        stmt.close();
-
         PreparedStatement ps = cnx.prepareStatement("INSERT INTO JugadorOptaPremio(Tipo,Ranking,Nombre,FIDEID,Descalificado) VALUES (?,?,?,?,?)");
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM Jugador");
@@ -160,7 +150,7 @@ public class Functions {
                         ps.setString(4,rs.getString("FIDEID"));
                         ps.setString(5,"Not");
                     }
-                }else if(Integer.parseInt(rs.getString("FIDE"))<1600 && Integer.parseInt(rs.getString("FIDE"))<1800){
+                }else if(Integer.parseInt(rs.getString("FIDE"))>1600 && Integer.parseInt(rs.getString("FIDE"))<1800){
                     String info = rs.getString("Info");
                     if(!info.equalsIgnoreCase("NULL")){
                         ps.setString(1,"General,1800," + info);
@@ -215,11 +205,9 @@ public class Functions {
                 sc.useDelimiter(";");
                 while(sc.hasNext()){
                     field = sc.next();
-                    //ps.setInt(1,Integer.parseInt(field));
-                    ps.setString(1,(field));
+                    ps.setInt(1,Integer.parseInt(field));
                     field = sc.next();
-                    ps.setString(2,(field));
-                    //ps.setInt(2,Integer.parseInt(field));
+                    ps.setInt(2,Integer.parseInt(field));
                     break;
                 }
                 System.out.println(ps);
@@ -231,38 +219,7 @@ public class Functions {
             throw new RuntimeException(e);
         }
     }
-
-    public static void actualizarRankingFinal(String nombre, Connection cnx) throws SQLException {
-        FileReader fr;
-        Scanner sc = null;
-        String palabra = "";
-        String field;
-
-        try {
-            fr = new FileReader(nombre);
-            BufferedReader bf = new BufferedReader(fr);
-            PreparedStatement ps = cnx.prepareStatement("UPDATE JugadorOptaPremio SET RankingFinal = ? WHERE Ranking = ?");
-            while ((palabra = bf.readLine()) != null) {
-                sc = new Scanner(palabra);
-                sc.useDelimiter(";");
-                while (sc.hasNext()) {
-                    field = sc.next();
-                    ps.setInt(1, Integer.parseInt(field));
-                    field = sc.next();
-                    ps.setInt(2, Integer.parseInt(field));
-                    break;
-                }
-                System.out.println(ps);
-                ps.executeUpdate();
-            }
-            ps.close();
-            fr.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
+    
     public static void ganadoresA(Connection cnx) throws SQLException {
         int contadorGeneral=0; //Max:12
         int contadorCV=0; //Max:5
@@ -271,77 +228,167 @@ public class Functions {
         int contador2200=0; //Max:2
 
         Statement st = cnx.createStatement();
-        boolean flag= st.execute("SELECT * FROM JugadorOptaPremio ORDER BY RankingFinal asc");
+        boolean flag= st.execute("SELECT * FROM JugadorOptaPremio ORDER BY RankingFinal asc, Tipo asc");
 
         if(flag){
             ResultSet rs = st.getResultSet();
             while(rs.next()){
-                String[] premios = rs.getString("Tipo").split(",");
+                String[] optar = rs.getString("Tipo").split(",");
+                ArrayList<String> premios = new ArrayList<>();
+
+                String hotel = "";
+                String cv = "";
+                for(int i=0; i<optar.length; i++){
+                    if(optar[i].equals("CVH")){
+                        cv = optar[i].substring(0,2);
+                        hotel = optar[i].substring(2,3);
+                        premios.add(cv);
+                        premios.add(hotel);
+                    }else {
+                        premios.add(optar[i]);
+                    }
+                }
+
+                System.out.print("Nombre: " + rs.getString("Nombre") + " ");
+
+                premios.forEach((num)->{
+                    System.out.print(num + " ");
+                });
+
+                System.out.println();
+
+
                 ArrayList<Integer> contadores = new ArrayList<>();
-                for(int i=0;i<premios.length;i++){
-                    if(premios[i].equals("General") && contadorGeneral <= 12){
+                for(int i=0;i<premios.size();i++){
+                    if(premios.get(i).equals("General") && contadorGeneral <= 12){
                         contadorGeneral++;
                         contadores.add(contadorGeneral);
-                    }else if(premios[i].equals("CV") && contadorCV <= 5 ){
+                    }else if(premios.get(i).equals("CV") && contadorCV <= 5 ){
                         contadorCV++;
                         contadores.add(contadorCV);
-                    } else if (premios[i].equals("CVH")) {
-                        contadorCV++;
-                        contadorHotel++;
-                        contadores.add(contadorCV);
-                        contadores.add(contadorHotel);
-                    } else if(premios[i].equals("H") && contadorHotel <= 20){
+                    } else if(premios.get(i).equals("H") && contadorHotel <= 20){
                         contadorHotel++;
                         contadores.add(contadorHotel);
-                    }else if(premios[i].equals("2400") && contador2400 <= 4){
+                    }else if(premios.get(i).equals("SUB2400") && contador2400 <= 4){
                         contador2400++;
                         contadores.add(contador2400);
-                    }else if(premios[i].equals("2200") && contador2200 <= 2){
+                    }else if(premios.get(i).equals("SUB2200") && contador2200 <= 2){
                         contador2200++;
                         contadores.add(contador2200);
                     }
                 }
+
                 PreparedStatement ps = cnx.prepareStatement("SELECT Importe FROM Premio WHERE Tipo LIKE ? AND Puesto = ?");
-                int[] importes = new int[premios.length];
-                for(int i=0;i<premios.length;i++){
-                    ps.setString(1,premios[i]);
+                int[] importes = new int[premios.size()];
+                for(int i=0;i<premios.size();i++){
+                    ps.setString(1,premios.get(i));
                     ps.setInt(2,contadores.get(i));
                     ResultSet r = ps.executeQuery();
-                    importes[i] = r.getInt("Importe");
+                    if (r.next()) {
+                        importes[i] = r.getInt("Importe");
+                    } else {
+                        // Manejar el caso en el que no se encuentren resultados
+                        importes[i] = 0; // o cualquier valor predeterminado que tenga sentido
+                    }
+                    System.out.println("--------------------------------------------------");
+                    System.out.println(ps);
                 }
 
-                int aux = importes[0], cont=0, posicion=importes[0];
+                for(int i=0;i<premios.size();i++){
+                    System.out.println(premios.get(i) + " --> " + importes[i]);
+                }
 
-                for(int i=0;i<premios.length;i++){
+                int aux = importes[0], cont=0, posicion=0;
+
+                for(int i=0;i<premios.size();i++){
                     if(aux < importes[i]){
                         aux = importes[i];
                         posicion = i;
                     }
                 }
 
-                for(int i=0;i<premios.length;i++){
+                for(int i=0;i<premios.size();i++){
                     if(aux==importes[i]){
                         cont++;
                     }
                 }
+
+                System.out.println(premios.get(posicion) + " -> " + importes[posicion]);
+
 
                 PreparedStatement preparedStatement = cnx.prepareStatement("INSERT INTO Ganadores VALUES (?,?,?,?,?)");
                 if(cont==1){
                     preparedStatement.setInt(1,rs.getInt("Ranking"));
                     preparedStatement.setInt(2,rs.getInt("RankingFinal"));
                     preparedStatement.setString(3,rs.getString("Nombre"));
-                    preparedStatement.setString(4,premios[posicion] + " -> " + importes[posicion]);
+                    preparedStatement.setString(4,rs.getString("FIDEID"));
+                    preparedStatement.setString(5,premios.get(posicion) + " -> " + importes[posicion]);
                     preparedStatement.executeUpdate();
                     System.out.println(preparedStatement);
+                    //se suman 2 al 2400 y 2200
+                    for(int i=0;i<premios.size();i++){
+                       if(premios.get(posicion).equals("General")){
+                           if(premios.get(i).equals("CV")){
+                               contadorCV--;
+                           }else if(premios.get(i).equals("H")){
+                               contadorHotel--;
+                           }else if(premios.get(i).equals("SUB2400")){
+                               contador2400--;
+                           }else if(premios.get(i).equals("SUB2200")){
+                               contador2200--;
+                           }
+                       } else if(premios.get(posicion).equals("CV")){
+                           if(premios.get(i).equals("General")){
+                               contadorGeneral--;
+                           }else if(premios.get(i).equals("H")){
+                               contadorHotel--;
+                           }else if (premios.get(i).equals("SUB2400")){
+                               contador2400--;
+                           }else if(premios.get(i).equals("SUB2200")){
+                               contador2200--;
+                           }
+                       } else if(premios.get(posicion).equals("H")){
+                           if (premios.get(i).equals("General")) {
+                               contadorGeneral--;
+                           } else if (premios.get(i).equals("CV")) {
+                               contadorCV-- ;
+                           } else if (premios.get(i).equals("SUB2400")) {
+                               contador2400--;
+                           } else if (premios.get(i).equals("SUB2200")) {
+                               contador2200--;
+                           }
+                       } else if(premios.get(posicion).equals("SUB2400")) {
+                           if(premios.get(i).equals("General")){
+                               contadorGeneral--;
+                           }else if(premios.get(i).equals("H")){
+                               contadorHotel--;
+                           } else if (premios.get(i).equals("CV")) {
+                               contadorCV--;
+                           } else if (premios.get(i).equals("SUB2200")){
+                               contador2200--;
+                           }
+                       }else if(premios.get(posicion).equals("SUB2200")) {
+                           if(premios.get(i).equals("General")){
+                               contadorGeneral--;
+                           }else if(premios.get(i).equals("H")){
+                               contadorHotel--;
+                           } else if (premios.get(i).equals("CV")) {
+                               contadorCV--;
+                           } else if (premios.get(i).equals("SUB2400")) {
+                               contador2400--;
+                           }
+                       }
+                   }
+
                 } else if (cont>1) {
-                    for(int i=0;i<premios.length;i++){
-                        if(premios[i].equalsIgnoreCase("General") && importes[i] == aux){
+                    for(int i=0;i<premios.size();i++){
+                        if(premios.get(i).equalsIgnoreCase("General") && importes[i] == aux){
 
-                        }else if(premios[i].equalsIgnoreCase("2400") && importes[i] == aux){
+                        }else if(premios.get(i).equalsIgnoreCase("2400") && importes[i] == aux){
 
-                        }else if (premios[i].equalsIgnoreCase("2200") && importes[i] == aux) {
+                        }else if (premios.get(i).equalsIgnoreCase("2200") && importes[i] == aux) {
 
-                        }else if (premios[i].equalsIgnoreCase("CV") && importes[i] == aux) {
+                        }else if (premios.get(i).equalsIgnoreCase("CV") && importes[i] == aux) {
 
                         }
                     }
@@ -419,10 +466,10 @@ public class Functions {
         return jugadoresA;
     }
 
-    public static ObservableList<Jugador> tbloptapremios(Connection cnx) throws SQLException {
+    public static ObservableList<Jugador> tbloptapremiosA(Connection cnx) throws SQLException {
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM JugadorOptaPremio ORDER BY Ranking ASC");
-        ObservableList<Jugador> jugadores = FXCollections.observableArrayList();
+        ObservableList<Jugador> jugadoresA = FXCollections.observableArrayList();
 
         if(flag){
             ResultSet rs = st.getResultSet();
@@ -434,18 +481,18 @@ public class Functions {
             String desc;
 
             while(rs.next()){
-                nombre = rs.getString("Nombre");
                 ranking = rs.getInt("Ranking");
                 rankingFinal = rs.getInt("RankingFinal");
                 tipo = rs.getString("tipo");
+                nombre = rs.getString("Nombre");
                 fideId = rs.getString("FIDEID");
-                //desc = rs.getString("desc");
+                desc = rs.getString("desc");
 
-                Jugador j = new Jugador(nombre, ranking, rankingFinal, tipo, fideId);
-                jugadores.add(j);
+                Jugador j = new Jugador(nombre, ranking, rankingFinal, tipo, fideId, desc);
+                jugadoresA.add(j);
             }
         }
-        return jugadores;
+        return jugadoresA;
     }
 
 
@@ -486,7 +533,25 @@ public class Functions {
         }
     }
 
-    public static void main(String[] args) throws SQLException, FileNotFoundException {
+    static Connection cnx;
 
+    static {
+        try {
+            cnx = getConnexion();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Connection getConnexion() throws SQLException {
+        String url = "jdbc:mariadb://localhost:3306/GrupoA";
+        String user = "root";
+        String password = "";
+        return DriverManager.getConnection(url, user, password);
+    }
+
+    public static void main(String[] args) throws SQLException, FileNotFoundException {
+        System.out.println("cac");
+        Functions.ganadoresA(cnx);
     }
 }
