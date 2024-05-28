@@ -1,24 +1,33 @@
 package com.example.retoajedrez;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class OpenAPremioController extends Application {
+import static javafx.application.Application.launch;
 
-    static Connection cnx; static Connection cnx2;
+public class OpenAPremioController implements Initializable {
+
+    static Connection cnx;
 
     static {
         try {
@@ -31,7 +40,7 @@ public class OpenAPremioController extends Application {
     private static Connection getConnexion() throws SQLException {
         String url = "jdbc:mariadb://localhost:3306/grupoa";
         String user = "root";
-        String password = "root";
+        String password = "Debian";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -39,10 +48,28 @@ public class OpenAPremioController extends Application {
         launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    private ObservableList<com.example.retoajedrez.Jugador> jugadoresposiblespremiosA;
 
-    }
+    @FXML
+    private TableColumn<com.example.retoajedrez.Jugador, Integer> colRanking;
+
+    @FXML
+    private TableColumn<com.example.retoajedrez.Jugador, Integer> colRankingFinal;
+
+    @FXML
+    private TableColumn<com.example.retoajedrez.Jugador, String> colPremios;
+
+    @FXML
+    private TableColumn<com.example.retoajedrez.Jugador, String> colNombre;
+
+    @FXML
+    private TableColumn<com.example.retoajedrez.Jugador, String> colFideID;
+
+    @FXML
+    private TableColumn<com.example.retoajedrez.Jugador, String> colDesc;
+
+    @FXML
+    private TableView<Jugador> tblposiblespremios;
 
     @FXML
     private void irAlMenu(ActionEvent event) {
@@ -66,8 +93,54 @@ public class OpenAPremioController extends Application {
     }
 
     @FXML
+    private void irAOpenA(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OpenA.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Open B BenidormChess");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/Imagenes/Logito.png")));
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            Stage currentStage = (Stage) ((Window) ((javafx.scene.Node) event.getSource()).getScene().getWindow());
+            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void optarA(ActionEvent event) throws SQLException {
-        ObservableList<Jugador> jugadores = null;
         Functions.optarA(cnx);
+        Functions.actualizar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv", cnx);
+        //Functions.actualizar("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/RankingFinalA.csv", cnx);
+        //ObservableList<Jugador> jugadores = Functions.tbloptapremiosA(cnx);
+
+        //jugadoresposiblespremiosA.addAll(Functions.tbloptapremiosA(cnx));
+
+        jugadoresposiblespremiosA.addAll(Functions.tbloptapremios(cnx));
+
+        //this.tblposiblespremios.setItems(jugadoresposiblespremiosA);
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        jugadoresposiblespremiosA = FXCollections.observableArrayList();
+
+        this.colRanking.setCellValueFactory(new PropertyValueFactory<>("ranking"));
+        this.colRankingFinal.setCellValueFactory(new PropertyValueFactory<>("rankingfinal"));
+        this.colPremios.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        this.colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        this.colFideID.setCellValueFactory(new PropertyValueFactory<>("fideId"));
+        this.colDesc.setCellValueFactory(new PropertyValueFactory<>("descalificado"));
+
+        // jugadoresposiblespremiosA.addAll(f.table());
+
+        //this.tblposiblespremios.setItems(jugadoresposiblespremiosA);
+
     }
 }

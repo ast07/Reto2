@@ -13,13 +13,14 @@ public class Jugador {
     private String fide;
     private String desc;
 
-    public Jugador(String nombre, int ranking, int rankingFinal, String tipo, String fideId, String desc) {
+
+    public Jugador(String nombre, int ranking, int rankingFinal, String tipo, String fideId) {
         this.nombre = nombre;
         this.ranking = ranking;
         this.rankingFinal = rankingFinal;
         this.tipo = tipo;
         this.fideId = fideId;
-        this.desc = desc;
+        this.desc = "Not";
     }
 
     public Jugador(int ranking, String nombre, String pais, String fide, String fideId, String info) {
@@ -95,23 +96,30 @@ public class Jugador {
         this.fide = fide;
     }
 
+    public String getDesc() {return desc;}
+
+    public void setDesc(String desc) {this.desc = desc;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Jugador jugador = (Jugador) o;
-        return ranking == jugador.ranking &&
-                rankingFinal == jugador.rankingFinal &&
-                Objects.equals(nombre, jugador.nombre) &&
-                Objects.equals(tipo, jugador.tipo) &&
-                Objects.equals(fideId, jugador.fideId) &&
-                Objects.equals(info, jugador.info) &&
-                Objects.equals(pais, jugador.pais) &&
-                Objects.equals(fide, jugador.fide);
+        return ranking == jugador.ranking && rankingFinal == jugador.rankingFinal && Objects.equals(nombre, jugador.nombre) && Objects.equals(tipo, jugador.tipo) && Objects.equals(fideId, jugador.fideId) && Objects.equals(info, jugador.info) && Objects.equals(pais, jugador.pais) && Objects.equals(fide, jugador.fide) && Objects.equals(desc, jugador.desc);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nombre, ranking, rankingFinal, tipo, fideId, info, pais, fide);
+        int result = Objects.hashCode(nombre);
+        result = 31 * result + ranking;
+        result = 31 * result + rankingFinal;
+        result = 31 * result + Objects.hashCode(tipo);
+        result = 31 * result + Objects.hashCode(fideId);
+        result = 31 * result + Objects.hashCode(info);
+        result = 31 * result + Objects.hashCode(pais);
+        result = 31 * result + Objects.hashCode(fide);
+        result = 31 * result + Objects.hashCode(desc);
+        return result;
     }
 }

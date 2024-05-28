@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class OpenBController implements Initializable {
+
     static Connection cnx;
 
     static {
@@ -35,9 +37,9 @@ public class OpenBController implements Initializable {
     }
 
     private static Connection getConnexion() throws SQLException {
-        String url = "jdbc:mariadb://localhost:3306/GrupoB";
+        String url = "jdbc:mariadb://localhost:3306/grupob";
         String user = "root";
-        String password = "root";
+        String password = "Debian";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -111,7 +113,7 @@ public class OpenBController implements Initializable {
     @FXML
     private void importarB(ActionEvent event) throws SQLException {
         jugadoresB = FXCollections.observableArrayList();
-        Functions.insertar("C:/Users/adri1/IdeaProjects/Reto2.2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv",cnx);
+        Functions.insertar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/LibroB.csv",cnx);
 
         jugadoresB.addAll(Functions.table(cnx));
         this.tblJugadoresB.setItems(jugadoresB);
@@ -127,9 +129,7 @@ public class OpenBController implements Initializable {
         this.colRanking.setCellValueFactory(new PropertyValueFactory<>("ranking"));
         this.colPais.setCellValueFactory(new PropertyValueFactory<>("pais"));
         this.colInfo.setCellValueFactory(new PropertyValueFactory<>("info"));
-
-
         this.tblJugadoresB.setItems(jugadoresB);
-    }
 
+    }
 }

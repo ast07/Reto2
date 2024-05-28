@@ -1,6 +1,7 @@
 package com.example.retoajedrez;
 
-import javafx.collections.FXCollections; import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.sql.*;
@@ -49,6 +50,10 @@ public class Functions {
 
 
     public static void optarA(Connection cnx) throws SQLException {
+        Statement stmt = cnx.createStatement();
+        stmt.executeUpdate("DELETE FROM jugadoroptapremio;");
+        stmt.close();
+
         PreparedStatement ps = cnx.prepareStatement("INSERT INTO JugadorOptaPremio(Tipo,Ranking,Nombre,FIDEID,Descalificado) VALUES (?,?,?,?,?)");
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM Jugador");
@@ -113,6 +118,10 @@ public class Functions {
     }
 
     public static void optarB(Connection cnx) throws SQLException {
+        Statement stmt = cnx.createStatement();
+        stmt.executeUpdate("DELETE FROM jugadoroptapremio;");
+        stmt.close();
+
         PreparedStatement ps = cnx.prepareStatement("INSERT INTO JugadorOptaPremio(Tipo,Ranking,Nombre,FIDEID,Descalificado) VALUES (?,?,?,?,?)");
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM Jugador");
@@ -206,9 +215,11 @@ public class Functions {
                 sc.useDelimiter(";");
                 while(sc.hasNext()){
                     field = sc.next();
-                    ps.setInt(1,Integer.parseInt(field));
+                    //ps.setInt(1,Integer.parseInt(field));
+                    ps.setString(1,(field));
                     field = sc.next();
-                    ps.setInt(2,Integer.parseInt(field));
+                    ps.setString(2,(field));
+                    //ps.setInt(2,Integer.parseInt(field));
                     break;
                 }
                 System.out.println(ps);
@@ -408,10 +419,10 @@ public class Functions {
         return jugadoresA;
     }
 
-    public static ObservableList<Jugador> tbloptapremiosA(Connection cnx) throws SQLException {
+    public static ObservableList<Jugador> tbloptapremios(Connection cnx) throws SQLException {
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM JugadorOptaPremio ORDER BY Ranking ASC");
-        ObservableList<Jugador> jugadoresA = FXCollections.observableArrayList();
+        ObservableList<Jugador> jugadores = FXCollections.observableArrayList();
 
         if(flag){
             ResultSet rs = st.getResultSet();
@@ -423,18 +434,18 @@ public class Functions {
             String desc;
 
             while(rs.next()){
+                nombre = rs.getString("Nombre");
                 ranking = rs.getInt("Ranking");
                 rankingFinal = rs.getInt("RankingFinal");
                 tipo = rs.getString("tipo");
-                nombre = rs.getString("Nombre");
                 fideId = rs.getString("FIDEID");
-                desc = rs.getString("desc");
+                //desc = rs.getString("desc");
 
-                Jugador j = new Jugador(nombre, ranking, rankingFinal, tipo, fideId, desc);
-                jugadoresA.add(j);
+                Jugador j = new Jugador(nombre, ranking, rankingFinal, tipo, fideId);
+                jugadores.add(j);
             }
         }
-        return jugadoresA;
+        return jugadores;
     }
 
 

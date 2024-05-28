@@ -38,9 +38,9 @@ public class OpenBPremioController implements Initializable {
     }
 
     private static Connection getConnexion() throws SQLException {
-        String url = "jdbc:mariadb://localhost:3306/GrupoB";
+        String url = "jdbc:mariadb://localhost:3306/grupob";
         String user = "root";
-        String password = "root";
+        String password = "Debian";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -64,9 +64,6 @@ public class OpenBPremioController implements Initializable {
 
     @FXML
     private TableColumn<com.example.retoajedrez.Jugador, String> colFideID;
-
-    @FXML
-    private TableColumn<com.example.retoajedrez.Jugador, String> colInfo;
 
     @FXML
     private TableColumn<com.example.retoajedrez.Jugador, String> colDesc;
@@ -115,18 +112,16 @@ public class OpenBPremioController implements Initializable {
         }
     }
 
-
-
     @FXML
     private void optarB(ActionEvent event) throws SQLException {
         Functions.optarB(cnx);
-        //Functions.actualizar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/LibroB.csv", cnx);
+        Functions.actualizar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/RankingFinalB.csv", cnx);
         //Functions.actualizar("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/RankingFinalB.csv", cnx);
         //ObservableList<Jugador> jugadores = Functions.tbloptapremiosB(cnx);
 
         //jugadoresposiblespremiosB.addAll(Functions.tbloptapremiosB(cnx));
 
-        jugadoresposiblespremiosB.addAll(Functions.tbloptapremiosA(cnx));
+        jugadoresposiblespremiosB.addAll(Functions.tbloptapremios(cnx));
 
         this.tblposiblespremiosB.setItems(jugadoresposiblespremiosB);
     }
