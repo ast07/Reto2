@@ -40,7 +40,7 @@ public class OpenBPremioController implements Initializable {
     private static Connection getConnexion() throws SQLException {
         String url = "jdbc:mariadb://localhost:3306/grupob";
         String user = "root";
-        String password = "Debian";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -115,13 +115,13 @@ public class OpenBPremioController implements Initializable {
     @FXML
     private void optarB(ActionEvent event) throws SQLException {
         Functions.optarB(cnx);
-        Functions.actualizar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/RankingFinalB.csv", cnx);
+        Functions.actualizar("C:/Users/adri1/IdeaProjects/RetoDeloscojones/target/classes/com/example/retoajedrez/CSV/RankingFinalB.csv", cnx);
         //Functions.actualizar("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/RankingFinalB.csv", cnx);
         //ObservableList<Jugador> jugadores = Functions.tbloptapremiosB(cnx);
 
         //jugadoresposiblespremiosB.addAll(Functions.tbloptapremiosB(cnx));
 
-        jugadoresposiblespremiosB.addAll(Functions.tbloptapremios(cnx));
+        jugadoresposiblespremiosB.addAll(Functions.tbloptapremiosA(cnx));
 
         this.tblposiblespremiosB.setItems(jugadoresposiblespremiosB);
     }
@@ -132,7 +132,7 @@ public class OpenBPremioController implements Initializable {
         jugadoresposiblespremiosB = FXCollections.observableArrayList();
 
         this.colRanking.setCellValueFactory(new PropertyValueFactory<>("ranking"));
-        this.colRankingFinal.setCellValueFactory(new PropertyValueFactory<>("rankingfinal"));
+        this.colRankingFinal.setCellValueFactory(new PropertyValueFactory<>("rankingFinal"));
         this.colPremios.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         this.colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         this.colFideID.setCellValueFactory(new PropertyValueFactory<>("fideId"));
@@ -140,7 +140,7 @@ public class OpenBPremioController implements Initializable {
 
         // jugadoresposiblespremiosB.addAll(f.table());
 
-        //this.tblposiblespremiosB.setItems(jugadoresposiblespremiosB);
+        this.tblposiblespremiosB.setItems(jugadoresposiblespremiosB);
 
     }
 }

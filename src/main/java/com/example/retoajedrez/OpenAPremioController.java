@@ -40,7 +40,7 @@ public class OpenAPremioController implements Initializable {
     private static Connection getConnexion() throws SQLException {
         String url = "jdbc:mariadb://localhost:3306/grupoa";
         String user = "root";
-        String password = "Debian";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -115,15 +115,15 @@ public class OpenAPremioController implements Initializable {
     @FXML
     private void optarA(ActionEvent event) throws SQLException {
         Functions.optarA(cnx);
-        Functions.actualizar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv", cnx);
+        Functions.actualizar("C:/Users/adri1/IdeaProjects/RetoDeloscojones/target/classes/com/example/retoajedrez/CSV/RankingFinalA.csv", cnx);
         //Functions.actualizar("/home/ALU1J/IdeaProjects/RetoAjedrez/src/main/resources/com/example/retoajedrez/CSV/RankingFinalA.csv", cnx);
         //ObservableList<Jugador> jugadores = Functions.tbloptapremiosA(cnx);
 
         //jugadoresposiblespremiosA.addAll(Functions.tbloptapremiosA(cnx));
 
-        jugadoresposiblespremiosA.addAll(Functions.tbloptapremios(cnx));
+        jugadoresposiblespremiosA.addAll(Functions.tbloptapremiosA(cnx));
 
-        //this.tblposiblespremios.setItems(jugadoresposiblespremiosA);
+       // this.tblposiblespremios.setItems(jugadoresposiblespremiosA);
     }
 
 
@@ -131,16 +131,16 @@ public class OpenAPremioController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         jugadoresposiblespremiosA = FXCollections.observableArrayList();
 
-        this.colRanking.setCellValueFactory(new PropertyValueFactory<>("ranking"));
-        this.colRankingFinal.setCellValueFactory(new PropertyValueFactory<>("rankingfinal"));
+        this.colRanking.setCellValueFactory(new PropertyValueFactory<>("Ranking"));
+        this.colRankingFinal.setCellValueFactory(new PropertyValueFactory<>("rankingFinal"));
         this.colPremios.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         this.colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         this.colFideID.setCellValueFactory(new PropertyValueFactory<>("fideId"));
-        this.colDesc.setCellValueFactory(new PropertyValueFactory<>("descalificado"));
+        this.colDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
 
         // jugadoresposiblespremiosA.addAll(f.table());
 
-        //this.tblposiblespremios.setItems(jugadoresposiblespremiosA);
+        this.tblposiblespremios.setItems(jugadoresposiblespremiosA);
 
     }
 }

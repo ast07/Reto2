@@ -39,7 +39,7 @@ public class OpenBController implements Initializable {
     private static Connection getConnexion() throws SQLException {
         String url = "jdbc:mariadb://localhost:3306/grupob";
         String user = "root";
-        String password = "Debian";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -113,8 +113,7 @@ public class OpenBController implements Initializable {
     @FXML
     private void importarB(ActionEvent event) throws SQLException {
         jugadoresB = FXCollections.observableArrayList();
-        Functions.insertar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/LibroB.csv",cnx);
-
+        Functions.insertar("C:/Users/adri1/IdeaProjects/RetoDeloscojones/target/classes/com/example/retoajedrez/CSV/LibroB.csv",cnx);
         jugadoresB.addAll(Functions.table(cnx));
         this.tblJugadoresB.setItems(jugadoresB);
     }

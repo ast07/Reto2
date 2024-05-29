@@ -48,6 +48,10 @@ public class Functions {
 
 
     public static void optarA(Connection cnx) throws SQLException {
+        Statement stmt = cnx.createStatement();
+        stmt.executeUpdate("DELETE FROM jugadoroptapremio;");
+        stmt.close();
+
         PreparedStatement ps = cnx.prepareStatement("INSERT INTO JugadorOptaPremio(Tipo,Ranking,Nombre,FIDEID,Descalificado) VALUES (?,?,?,?,?)");
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM Jugador");
@@ -112,6 +116,10 @@ public class Functions {
     }
 
     public static void optarB(Connection cnx) throws SQLException {
+        Statement stmt = cnx.createStatement();
+        stmt.executeUpdate("DELETE FROM jugadoroptapremio;");
+        stmt.close();
+
         PreparedStatement ps = cnx.prepareStatement("INSERT INTO JugadorOptaPremio(Tipo,Ranking,Nombre,FIDEID,Descalificado) VALUES (?,?,?,?,?)");
         Statement st = cnx.createStatement();
         boolean flag = st.execute("SELECT * FROM Jugador");
@@ -205,13 +213,15 @@ public class Functions {
                 sc.useDelimiter(";");
                 while(sc.hasNext()){
                     field = sc.next();
-                    ps.setInt(1,Integer.parseInt(field));
+                    //ps.setInt(1,Integer.parseInt(field));
+                    ps.setString(1,(field));
                     field = sc.next();
-                    ps.setInt(2,Integer.parseInt(field));
+                    ps.setString(2,(field));
+                    //ps.setInt(2,Integer.parseInt(field));
                     break;
                 }
                 System.out.println(ps);
-                ps.executeUpdate();
+                //ps.executeUpdate();
             }
             ps.close();
             fr.close();
@@ -235,7 +245,6 @@ public class Functions {
             while(rs.next()){
                 String[] optar = rs.getString("Tipo").split(",");
                 ArrayList<String> premios = new ArrayList<>();
-
                 String hotel = "";
                 String cv = "";
                 for(int i=0; i<optar.length; i++){
@@ -282,13 +291,13 @@ public class Functions {
                 int[] importes = new int[premios.size()];
                 for(int i=0;i<premios.size();i++){
                     ps.setString(1,premios.get(i));
-                    ps.setInt(2,contadores.get(i));
+                    ps.setInt(2, contadores.get(i));
                     ResultSet r = ps.executeQuery();
                     if (r.next()) {
                         importes[i] = r.getInt("Importe");
                     } else {
                         // Manejar el caso en el que no se encuentren resultados
-                        importes[i] = 0; // o cualquier valor predeterminado que tenga sentido
+                        importes[i] =0; // o cualquier valor predeterminado que tenga sentido
                     }
                     System.out.println("--------------------------------------------------");
                     System.out.println(ps);
@@ -381,7 +390,7 @@ public class Functions {
                    }
 
                 } else if (cont>1) {
-                    for(int i=0;i<premios.size();i++){
+                    for(int i=0;i<=premios.size();i++){
                         if(premios.get(i).equalsIgnoreCase("General") && importes[i] == aux){
 
                         }else if(premios.get(i).equalsIgnoreCase("2400") && importes[i] == aux){
@@ -486,9 +495,9 @@ public class Functions {
                 tipo = rs.getString("tipo");
                 nombre = rs.getString("Nombre");
                 fideId = rs.getString("FIDEID");
-                desc = rs.getString("desc");
 
-                Jugador j = new Jugador(nombre, ranking, rankingFinal, tipo, fideId, desc);
+
+                Jugador j = new Jugador(nombre, ranking, rankingFinal, tipo, fideId);
                 jugadoresA.add(j);
             }
         }
@@ -546,7 +555,7 @@ public class Functions {
     private static Connection getConnexion() throws SQLException {
         String url = "jdbc:mariadb://localhost:3306/GrupoA";
         String user = "root";
-        String password = "";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 

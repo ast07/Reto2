@@ -39,7 +39,7 @@ public class OpenAController implements Initializable {
     private static Connection getConnexion() throws SQLException {
         String url = "jdbc:mariadb://localhost:3306/grupoa";
         String user = "root";
-        String password = "Debian";
+        String password = "root";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -113,7 +113,8 @@ public class OpenAController implements Initializable {
     @FXML
     private void importarA(ActionEvent event) throws SQLException {
         jugadoresA = FXCollections.observableArrayList();
-        Functions.insertar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv",cnx);
+        //Functions.insertar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv",cnx);
+        Functions.insertar("C:/Users/adri1/IdeaProjects/RetoDeloscojones/target/classes/com/example/retoajedrez/CSV/LibroA.csv",cnx);
 
         jugadoresA.addAll(Functions.table(cnx));
         this.tblJugadoresA.setItems(jugadoresA);
