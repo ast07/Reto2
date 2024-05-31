@@ -23,6 +23,16 @@ public class Jugador {
         this.desc = "Not";
     }
 
+    public Jugador(String nombre, int ranking, int rankingFinal, String tipo, String fideId,String info) {
+        this.nombre = nombre;
+        this.ranking = ranking;
+        this.rankingFinal = rankingFinal;
+        this.tipo = tipo;
+        this.fideId = fideId;
+        this.desc = "Not";
+        this.info=info;
+    }
+
     public Jugador(int ranking, String nombre, String pais, String fide, String fideId, String info) {
         this.nombre = nombre;
         this.ranking = ranking;
@@ -32,6 +42,13 @@ public class Jugador {
         this.info = info;
     }
 
+public Jugador(int ranking, int rankingFinal, String nombre, String fideId, String tipo) {
+        this.nombre = nombre;
+        this.ranking = ranking;
+        this.rankingFinal=rankingFinal;
+        this.tipo = tipo;
+        this.fideId = fideId;
+}
     public String getNombre() {
         return nombre;
     }

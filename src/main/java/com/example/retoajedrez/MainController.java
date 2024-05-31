@@ -60,7 +60,4 @@ public class MainController extends Application {
             e.printStackTrace();
         }
     }
-
-
 }
-

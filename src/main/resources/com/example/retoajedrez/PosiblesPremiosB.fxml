@@ -3,24 +3,25 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1504.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.retoajedrez.OpenBPremioController">
     <children>
-        <Button fx:id="optarb" layoutX="61.0" layoutY="221.0" mnemonicParsing="false" onAction="#optarB" prefHeight="50.0" prefWidth="186.0" text="Buscar Premios" />
+        <Button fx:id="iraganadoresb" layoutX="56.0" layoutY="595.0" mnemonicParsing="false" onAction="#irAGanadoresB" prefHeight="50.0" prefWidth="186.0" text="Ganadores" />
         <TableView fx:id="tblposiblespremiosB" layoutX="270.0" layoutY="14.0" prefHeight="705.0" prefWidth="1226.0">
             <columns>
                 <TableColumn fx:id="colRanking" style="-fx-alignment: CENTER;" text="Ranking" />
                 <TableColumn fx:id="colRankingFinal" prefWidth="123.0" style="-fx-alignment: CENTER;" text="RankingFinal" />
                 <TableColumn fx:id="colPremios" prefWidth="237.0" style="-fx-alignment: CENTER;" text="Premios" />
                 <TableColumn fx:id="colNombre" minWidth="0.0" prefWidth="490.0" style="-fx-alignment: CENTER;" text="Nombre" />
-                <TableColumn fx:id="colFideID" minWidth="0.0" prefWidth="217.0" style="-fx-alignment: CENTER;" text="FIDEID" />
-                <TableColumn fx:id="colDesc" maxWidth="278.0" prefWidth="59.0" style="-fx-alignment: CENTER;" text="Desc" />
+                <TableColumn fx:id="colFideID" minWidth="0.0" prefWidth="222.0" style="-fx-alignment: CENTER;" text="FIDEID" />
+                <TableColumn fx:id="colDesc" maxWidth="278.0" prefWidth="58.0" style="-fx-alignment: CENTER;" text="Desc" />
             </columns>
         </TableView>
-        <ImageView fitHeight="162.0" fitWidth="162.0" layoutX="80.0" layoutY="16.0">
+        <ImageView fitHeight="104.0" fitWidth="104.0" layoutX="97.0" layoutY="16.0">
             <image>
                 <Image url="@Imagenes/LOGO.png" />
             </image>
@@ -34,5 +35,8 @@
                 </ImageView>
             </graphic>
         </Button>
+        <TextField fx:id="txtcaldesc" layoutX="39.0" layoutY="378.0" prefHeight="31.0" prefWidth="221.0" promptText="Poner Not/Yes " />
+        <Button fx:id="btncaldesc" layoutX="57.0" layoutY="430.0" mnemonicParsing="false" onAction="#optarB" prefHeight="50.0" prefWidth="186.0" text="Calificar/Descalificar" />
+        <Button fx:id="optarb" layoutX="57.0" layoutY="203.0" mnemonicParsing="false" onAction="#optarB" prefHeight="50.0" prefWidth="186.0" text="Importar" />
     </children>
 </AnchorPane>

@@ -9,14 +9,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -67,12 +64,6 @@ public class OpenBController implements Initializable {
     private TableView<com.example.retoajedrez.Jugador> tblJugadoresB;
 
     @FXML
-    private void cerrarVentana(ActionEvent event) {
-        Stage currentStage = (Stage) ((Window) ((Node) event.getSource()).getScene().getWindow());
-        currentStage.close();
-    }
-
-    @FXML
     private void irAlMenu(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Página_Menu.fxml"));
@@ -113,10 +104,13 @@ public class OpenBController implements Initializable {
     @FXML
     private void importarB(ActionEvent event) throws SQLException {
         jugadoresB = FXCollections.observableArrayList();
-        Functions.insertar("C:/Users/adri1/IdeaProjects/RetoDeloscojones/target/classes/com/example/retoajedrez/CSV/LibroB.csv",cnx);
+        //Functions.insertar("C:/Users/Juan Karl/IdeaProjects/RetoDeloscojones/src/main/resources/com/example/retoajedrez/CSV/LibroB.csv",cnx);
+        Functions.insertar("C:\\Users\\adri1\\Downloads\\RetoDeloscojones\\src\\main\\resources\\com\\example\\retoajedrez\\CSV\\LibroB.csv",cnx);
+
         jugadoresB.addAll(Functions.table(cnx));
         this.tblJugadoresB.setItems(jugadoresB);
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -128,7 +122,16 @@ public class OpenBController implements Initializable {
         this.colRanking.setCellValueFactory(new PropertyValueFactory<>("ranking"));
         this.colPais.setCellValueFactory(new PropertyValueFactory<>("pais"));
         this.colInfo.setCellValueFactory(new PropertyValueFactory<>("info"));
-        this.tblJugadoresB.setItems(jugadoresB);
 
+        cargarBaseDatos();
+    }
+
+    private void cargarBaseDatos() {
+        try {
+            jugadoresB.addAll(Functions.table(cnx));
+            this.tblJugadoresB.setItems(jugadoresB);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

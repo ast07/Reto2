@@ -49,7 +49,6 @@ public class MenuController extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML

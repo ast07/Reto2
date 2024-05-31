@@ -9,14 +9,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -66,11 +63,6 @@ public class OpenAController implements Initializable {
     @FXML
     private TableView<com.example.retoajedrez.Jugador> tblJugadoresA;
 
-    @FXML
-    private void cerrarVentana(ActionEvent event) {
-        Stage currentStage = (Stage) ((Window) ((Node) event.getSource()).getScene().getWindow());
-        currentStage.close();
-    }
 
     @FXML
     private void irAlMenu(ActionEvent event) {
@@ -113,16 +105,18 @@ public class OpenAController implements Initializable {
     @FXML
     private void importarA(ActionEvent event) throws SQLException {
         jugadoresA = FXCollections.observableArrayList();
-        //Functions.insertar("C:/Users/Juan Karl/IdeaProjects/Reto2/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv",cnx);
-        Functions.insertar("C:/Users/adri1/IdeaProjects/RetoDeloscojones/target/classes/com/example/retoajedrez/CSV/LibroA.csv",cnx);
-
+        //Functions.insertar("C:/Users/Juan Karl/IdeaProjects/RetoDeloscojones/src/main/resources/com/example/retoajedrez/CSV/LibroA.csv",cnx);
+        Functions.insertar("C:\\Users\\adri1\\Downloads\\RetoDeloscojones\\src\\main\\resources\\com\\example\\retoajedrez\\CSV\\LibroA.csv", cnx);
         jugadoresA.addAll(Functions.table(cnx));
         this.tblJugadoresA.setItems(jugadoresA);
     }
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         jugadoresA = FXCollections.observableArrayList();
+
 
         this.colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         this.colFide.setCellValueFactory(new PropertyValueFactory<>("fide"));
@@ -130,7 +124,16 @@ public class OpenAController implements Initializable {
         this.colRanking.setCellValueFactory(new PropertyValueFactory<>("ranking"));
         this.colPais.setCellValueFactory(new PropertyValueFactory<>("pais"));
         this.colInfo.setCellValueFactory(new PropertyValueFactory<>("info"));
-        this.tblJugadoresA.setItems(jugadoresA);
-        
+
+        cargarBaseDatos();
+    }
+
+    private void cargarBaseDatos() {
+        try {
+            jugadoresA.addAll(Functions.table(cnx));
+            this.tblJugadoresA.setItems(jugadoresA);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

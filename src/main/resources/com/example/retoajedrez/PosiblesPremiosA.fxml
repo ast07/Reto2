@@ -3,24 +3,25 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1504.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.retoajedrez.OpenAPremioController">
     <children>
-        <Button fx:id="optara" layoutX="61.0" layoutY="221.0" mnemonicParsing="false" onAction="#optarA" prefHeight="50.0" prefWidth="186.0" text="Buscar Premios" />
-        <TableView fx:id="tblposiblespremiosa" layoutX="270.0" layoutY="14.0" prefHeight="705.0" prefWidth="1226.0">
+        <Button fx:id="iraganadoresa" layoutX="56.0" layoutY="595.0" mnemonicParsing="false" onAction="#irAGanadoresA" prefHeight="50.0" prefWidth="186.0" text="Ganadores" />
+        <TableView fx:id="tblposiblespremiosA" layoutX="270.0" layoutY="14.0" prefHeight="705.0" prefWidth="1226.0">
             <columns>
-                <TableColumn fx:id="colRanking" text="Ranking" />
-            <TableColumn fx:id="colRankingFinal" prefWidth="123.0" text="RankingFinal" />
-            <TableColumn fx:id="colPremios" prefWidth="237.0" text="Premios" />
-                <TableColumn fx:id="colNombre" minWidth="0.0" prefWidth="490.0" text="Nombre" />
-                <TableColumn fx:id="colFideID" minWidth="0.0" prefWidth="222.0" text="FIDEID" />
-            <TableColumn fx:id="colDesc" maxWidth="278.0" prefWidth="58.0" text="Desc" />
+                <TableColumn fx:id="colRanking" style="-fx-alignment: CENTER;" text="Ranking" />
+            <TableColumn fx:id="colRankingFinal" prefWidth="123.0" style="-fx-alignment: CENTER;" text="RankingFinal" />
+            <TableColumn fx:id="colPremios" prefWidth="237.0" style="-fx-alignment: CENTER;" text="Premios" />
+                <TableColumn fx:id="colNombre" minWidth="0.0" prefWidth="490.0" style="-fx-alignment: CENTER;" text="Nombre" />
+                <TableColumn fx:id="colFideID" minWidth="0.0" prefWidth="222.0" style="-fx-alignment: CENTER;" text="FIDEID" />
+            <TableColumn fx:id="colDesc" maxWidth="278.0" prefWidth="58.0" style="-fx-alignment: CENTER;" text="Desc" />
             </columns>
         </TableView>
-        <ImageView fitHeight="162.0" fitWidth="162.0" layoutX="80.0" layoutY="16.0">
+        <ImageView fitHeight="104.0" fitWidth="104.0" layoutX="97.0" layoutY="16.0">
             <image>
                 <Image url="@Imagenes/LOGO.png" />
             </image>
@@ -34,5 +35,9 @@
                 </ImageView>
             </graphic>
         </Button>
+      <TextField fx:id="txtcaldesc" layoutX="39.0" layoutY="378.0" prefHeight="31.0" prefWidth="221.0" promptText="Poner Not/Yes " />
+      <Button fx:id="btncaldesc" layoutX="57.0" layoutY="430.0" mnemonicParsing="false" onAction="#modificarA" prefHeight="50.0" prefWidth="186.0" text="Calificar/Descalificar" />
+      <Button fx:id="optara" layoutX="57.0" layoutY="203.0" mnemonicParsing="false" onAction="#optarA" prefHeight="50.0" prefWidth="186.0" text="Importar" />
+      <Button layoutX="73.0" layoutY="298.0" mnemonicParsing="false" onAction="#irAModificarA" prefHeight="40.0" prefWidth="128.0" text="Modificar" />
     </children>
 </AnchorPane>
